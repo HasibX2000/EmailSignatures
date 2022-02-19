@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <title>Document</title>
+</head>
+
+<body>
+  <table ng-attr-style="{{$ctrl.outerTableStyle()}}" id="zs-output-sig" border="0" cellpadding="0" cellspacing="0"
+    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse; width:500px;">
+    <tbody>
+      <!-- ngRepeat: table in $ctrl.tables -->
+      <tr ng-repeat="table in $ctrl.tables" class="zs-1 zs-10">
+        <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+          <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+            style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+            <tbody>
+              <tr>
+                <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+                  <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                    <tbody>
+                      <tr ng-repeat="row in table.rows" class="ng-scope">
+                        <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+                          <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+                            style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                            <tbody>
+                              <tr>
+                                <td ng-repeat="section in row.sections" ng-attr-style="{{$ctrl.tdStyle(section)}}"
+                                  ng-if="$ctrl.showSection(section)"
+                                  ng-mouseover="$ctrl.highlightSectionSpacer(section)"
+                                  ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                  ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'section' + section.style.section_area)}"
+                                  ng-click="$ctrl.goToVerticalSection(section)" class="ng-scope" role="button"
+                                  tabindex="0" style="padding:0 !important;">
+                                  <table ng-attr-style="{{$ctrl.tableStyle()}}" ng-if="$ctrl.sectionIsntSpacer(section)"
+                                    border="0" cellpadding="0" cellspacing="0" class="ng-scope"
+                                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                                    <tbody>
+                                      <tr ng-if="section.section.border_padding > 0"
+                                        ng-click="$ctrl.goToSection(section)"
+                                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                        <td ng-attr-style="{{$ctrl.tdSectionStyle(section.section, 'padding')}}"
+                                          style="border-collapse:collapse;padding-bottom:10px;height:10px;"></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr ng-repeat="table in $ctrl.tables" class="zs-1 zs-11">
+        <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+          <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+            style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+            <tbody>
+              <tr>
+                <!-- ngIf: $ctrl.showSection(logoSection) -->
+                <td ng-repeat="logoSection in table.logoSections" ng-attr-style="{{$ctrl.tdStyle(logoSection)}}"
+                  ng-if="$ctrl.showSection(logoSection)"
+                  ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'section' + logoSection.section.section_area)}"
+                  width="127" ng-click="$ctrl.goToVerticalSection(logoSection)"
+                  class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0"
+                  style="padding:0 !important;">
+                  <!-- ngIf: $ctrl.sectionIsntSpacer(logoSection) -->
+                  <table ng-attr-style="{{$ctrl.tableStyle()}}" ng-if="$ctrl.sectionIsntSpacer(logoSection)" border="0"
+                    cellpadding="0" cellspacing="0" class="ng-scope"
+                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                    <tbody>
+                      <!-- FIRST FIELD in vertical sections and horizontal field borders -->
+                      <!-- ngIf: $ctrl.showFieldInColumn(logoSection, logoSection.fields[0]) -->
+                      <tr ng-if="$ctrl.showFieldInColumn(logoSection, logoSection.fields[0])"
+                        ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + logoSection.fields[0].area)}"
+                        ng-mouseover="$ctrl.highlightPreviewField(logoSection.fields[0])"
+                        ng-mouseleave="$ctrl.hideThing('highlighter')"
+                        ng-click="$ctrl.goToField(logoSection.fields[0], logoSection)" class="ng-scope" role="button"
+                        tabindex="0">
+                        <td ng-attr-style="{{$ctrl.tdStyle(logoSection.fields[0])}}"
+                          style="border-collapse:collapse;line-height:0px;padding:0 !important;">
+                          <!-- IMAGE FIELDS -->
+                          <!-- ngIf: logoSection.fields[0].category == 'image' -->
+                          <zs-remove ng-if="logoSection.fields[0].category == 'image'" class="ng-scope">
+                            <!-- without hyperlink -->
+                            <!-- ngIf: logoSection.fields[0].category == 'image' && !logoSection.fields[0].hyperlink --><img
+                              ng-if="logoSection.fields[0].category == 'image' &amp;&amp; !logoSection.fields[0].hyperlink"
+                              ng-src="https://y5t6h9a6.stackpathcdn.com/a94f546c-8212-445b-92d5-046b3a8664e5/-/resize/254x362/img.png"
+                              height="181" width="127" alt="" border="0"
+                              ng-attr-style="{{$ctrl.changeImageShape(logoSection.fields[0])}}" class="ng-scope"
+                              src="https://y5t6h9a6.stackpathcdn.com/a94f546c-8212-445b-92d5-046b3a8664e5/-/resize/254x362/img.png">
+                            <!-- end ngIf: logoSection.fields[0].category == 'image' && !logoSection.fields[0].hyperlink -->
+                            <!-- with hyperlink -->
+                            <!-- ngIf: logoSection.fields[0].category == 'image' && logoSection.fields[0].hyperlink -->
+                          </zs-remove><!-- end ngIf: logoSection.fields[0].category == 'image' -->
+                        </td>
+                      </tr>
+                      <tr ng-if="logoSection.section.border_padding > 0" ng-click="$ctrl.goToSection(logoSection)"
+                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                        <td ng-attr-style="{{$ctrl.tdSectionStyle(logoSection.section, 'padding')}}"
+                          style="border-collapse:collapse;padding-bottom:4px;height:4px;"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td ng-repeat="logoSection in table.logoSections" ng-attr-style="{{$ctrl.tdStyle(logoSection)}}"
+                  ng-if="$ctrl.showSection(logoSection)"
+                  ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'section' + logoSection.section.section_area)}"
+                  width="7" ng-click="$ctrl.goToVerticalSection(logoSection)"
+                  class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0"
+                  style="border-collapse:collapse;padding-right: 7px;width: 7px;"> </td>
+                <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+                  <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                    <tbody>
+                      <tr ng-repeat="row in table.rows" class="ng-scope">
+                        <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+                          <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+                            style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                            <tbody>
+                              <tr>
+                                <td ng-repeat="section in row.sections" ng-attr-style="{{$ctrl.tdStyle(section)}}"
+                                  ng-if="$ctrl.showSection(section)"
+                                  ng-mouseover="$ctrl.highlightSectionSpacer(section)"
+                                  ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                  ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'section' + section.style.section_area)}"
+                                  ng-click="$ctrl.goToVerticalSection(section)" class="ng-scope" role="button"
+                                  tabindex="0" style="padding:0 !important;">
+                                  <table ng-attr-style="{{$ctrl.tableStyle()}}" ng-if="$ctrl.sectionIsntSpacer(section)"
+                                    border="0" cellpadding="0" cellspacing="0" class="ng-scope"
+                                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                                    <tbody>
+                                      <tr ng-repeat="field in section.fields track by $index"
+                                        ng-if="$ctrl.showFieldInColumn(section, field)"
+                                        ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + field.area)}"
+                                        ng-mouseover="$ctrl.highlightPreviewField(field)"
+                                        ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                        ng-click="$ctrl.goToField(field, section)"
+                                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                        <td ng-attr-style="{{$ctrl.tdStyle(field)}}"
+                                          style="border-collapse:collapse;font-family:Verdana, Geneva, sans-serif;font-size:25.0px;font-style:normal;line-height:27px;font-weight:400;padding:0 !important;">
+                                          <zs-remove ng-if="field.category == 'text' || field.category == 'tag'"
+                                            class="ng-scope"><span ng-if="!field.hyperlink"
+                                              ng-attr-style="{{$ctrl.spanStyle(field)}}" class="ng-binding ng-scope"
+                                              style="font-family:Verdana, Geneva, sans-serif;font-size:25.0px;font-style:normal;line-height:27px;font-weight:400;color:#ff1919;display:inline;">Yanick
+                                              Lemonde</span> </zs-remove>
+                                        </td>
+                                      </tr>
+                                      <tr ng-repeat="field in section.fields track by $index"
+                                        ng-if="$ctrl.showFieldInColumn(section, field)"
+                                        ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + field.area)}"
+                                        ng-mouseover="$ctrl.highlightPreviewField(field)"
+                                        ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                        ng-click="$ctrl.goToField(field, section)"
+                                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                        <td ng-attr-style="{{$ctrl.tdStyle(field)}}"
+                                          style="border-collapse:collapse;padding-bottom:1px;height:1px;"> </td>
+                                      </tr>
+                                      <tr ng-repeat="field in section.fields track by $index"
+                                        ng-if="$ctrl.showFieldInColumn(section, field)"
+                                        ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + field.area)}"
+                                        ng-mouseover="$ctrl.highlightPreviewField(field)"
+                                        ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                        ng-click="$ctrl.goToField(field, section)"
+                                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                        <td ng-attr-style="{{$ctrl.tdStyle(field)}}"
+                                          style="border-collapse:collapse;font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;padding:0 !important;">
+                                          <zs-remove ng-if="field.category == 'text' || field.category == 'tag'"
+                                            class="ng-scope"><span ng-if="field.tag &amp;&amp; field.tag.style.visible"
+                                              ng-attr-style="{{$ctrl.spanStyle(field.tag)}}" class="ng-binding ng-scope"
+                                              style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;color:#4f4f4f;display:inline;">P.-D.
+                                              G. - </span><span ng-if="!field.hyperlink"
+                                              ng-attr-style="{{$ctrl.spanStyle(field)}}" class="ng-binding ng-scope"
+                                              style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;color:#ff1919;display:inline;">Habitations
+                                              Urbania </span> </zs-remove>
+                                        </td>
+                                      </tr>
+                                      <tr ng-repeat="field in section.fields track by $index"
+                                        ng-if="$ctrl.showFieldInColumn(section, field)"
+                                        ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + field.area)}"
+                                        ng-mouseover="$ctrl.highlightPreviewField(field)"
+                                        ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                        ng-click="$ctrl.goToField(field, section)"
+                                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                        <td ng-attr-style="{{$ctrl.tdStyle(field)}}"
+                                          style="border-collapse:collapse;font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;padding:0 !important;">
+                                          <zs-remove ng-if="field.category == 'text' || field.category == 'tag'"
+                                            class="ng-scope"><span ng-if="field.tag &amp;&amp; field.tag.style.visible"
+                                              ng-attr-style="{{$ctrl.spanStyle(field.tag)}}" class="ng-binding ng-scope"
+                                              style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;color:#4f4f4f;display:inline;">V.-P.
+                                              -
+                                            </span><span ng-if="!field.hyperlink"
+                                              ng-attr-style="{{$ctrl.spanStyle(field)}}" class="ng-binding ng-scope"
+                                              style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;color:#ff1919;display:inline;">Groupe
+                                              immobilier Nomadya </span> </zs-remove>
+                                        </td>
+                                      </tr>
+                                      <tr ng-if="section.section.border_padding > 0"
+                                        ng-click="$ctrl.goToSection(section)"
+                                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                        <td ng-attr-style="{{$ctrl.tdSectionStyle(section.section, 'padding')}}"
+                                          style="border-collapse:collapse;padding-bottom:7px;height:7px;"></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr ng-repeat="row in table.rows" class="ng-scope">
+                        <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+                          <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+                            style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                            <tbody>
+                              <tr>
+                                <td ng-repeat="section in row.sections" ng-attr-style="{{$ctrl.tdStyle(section)}}"
+                                  ng-if="$ctrl.showSection(section)"
+                                  ng-mouseover="$ctrl.highlightSectionSpacer(section)"
+                                  ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                  ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'section' + section.style.section_area)}"
+                                  ng-click="$ctrl.goToVerticalSection(section)" class="ng-scope" role="button"
+                                  tabindex="0" style="padding:0 !important;">
+                                  <table ng-attr-style="{{$ctrl.tableStyle()}}" ng-if="$ctrl.sectionIsntSpacer(section)"
+                                    border="0" cellpadding="0" cellspacing="0" class="ng-scope"
+                                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                                    <tbody>
+                                      <tr ng-repeat="field in section.fields track by $index"
+                                        ng-if="$ctrl.showFieldInColumn(section, field)"
+                                        ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + field.area)}"
+                                        ng-mouseover="$ctrl.highlightPreviewField(field)"
+                                        ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                        ng-click="$ctrl.goToField(field, section)"
+                                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                        <td ng-attr-style="{{$ctrl.tdStyle(field)}}"
+                                          style="border-collapse:collapse;line-height:0px;padding:0 !important;">
+                                          <zs-remove ng-if="field.category == 'image'" class="ng-scope"><img
+                                              ng-if="field.category == 'image' &amp;&amp; !field.hyperlink"
+                                              ng-src="https://y5t6h9a6.stackpathcdn.com/1fdb7bf9-c835-4c1a-a3c8-6ca0712ed9fa/-/resize/234x194/img.png"
+                                              height="97" width="117" alt="" border="0"
+                                              ng-attr-style="{{$ctrl.changeImageShape(field)}}" class="ng-scope"
+                                              src="https://y5t6h9a6.stackpathcdn.com/1fdb7bf9-c835-4c1a-a3c8-6ca0712ed9fa/-/resize/234x194/img.png">
+                                        </td>
+                                      </tr>
+                                      <tr ng-if="section.section.border_padding > 0"
+                                        ng-click="$ctrl.goToSection(section)"
+                                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                        <td ng-attr-style="{{$ctrl.tdSectionStyle(section.section, 'padding')}}"
+                                          style="border-collapse:collapse;padding-bottom:5px;height:5px;"></td>
+                                      </tr>
+                                      <tr ng-if="section.section.border_width > 0" ng-click="$ctrl.goToSection(section)"
+                                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                        <td ng-attr-style="{{$ctrl.tdSectionStyle(section.section, 'border')}}"
+                                          style="border-collapse:collapse;background-color:#000000;height:2px;padding:0 !important;">
+                                        </td>
+                                      </tr>
+                                      <tr
+                                        ng-if="section.section.border_margin > 0 &amp;&amp; section.section.border_width > 0"
+                                        ng-click="$ctrl.goToSection(section)"
+                                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                        <td ng-attr-style="{{$ctrl.tdSectionStyle(section.section, 'margin')}}"
+                                          style="border-collapse:collapse;padding-bottom:6px;height:6px;"></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr ng-repeat="row in table.rows" class="ng-scope">
+                        <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+                          <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+                            style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                            <tbody>
+                              <tr>
+                                <td ng-repeat="section in row.sections" ng-attr-style="{{$ctrl.tdStyle(section)}}"
+                                  ng-if="$ctrl.showSection(section)"
+                                  ng-mouseover="$ctrl.highlightSectionSpacer(section)"
+                                  ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                  ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'section' + section.style.section_area)}"
+                                  ng-click="$ctrl.goToVerticalSection(section)" class="ng-scope" role="button"
+                                  tabindex="0" style="padding:0 !important;">
+                                  <table ng-attr-style="{{$ctrl.tableStyle()}}" ng-if="$ctrl.sectionIsntSpacer(section)"
+                                    border="0" cellpadding="0" cellspacing="0" class="ng-scope"
+                                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                                    <tbody>
+                                      <tr ng-if="section.section.border_padding > 0"
+                                        ng-click="$ctrl.goToSection(section)"
+                                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                        <td ng-attr-style="{{$ctrl.tdSectionStyle(section.section, 'padding')}}"
+                                          style="border-collapse:collapse;padding-bottom:6px;height:6px;"></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr ng-repeat="table in $ctrl.tables" class="zs-1 zs-12">
+        <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+          <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+            style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+            <tbody>
+              <tr>
+                <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+                  <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                    <tbody>
+                      <tr ng-repeat="row in table.rows" class="ng-scope">
+                        <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+                          <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+                            style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                            <tbody>
+                              <tr>
+                                <td ng-repeat="section in row.sections" ng-attr-style="{{$ctrl.tdStyle(section)}}"
+                                  ng-if="$ctrl.showSection(section)"
+                                  ng-mouseover="$ctrl.highlightSectionSpacer(section)"
+                                  ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                  ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'section' + section.style.section_area)}"
+                                  ng-click="$ctrl.goToVerticalSection(section)" class="ng-scope" role="button"
+                                  tabindex="0" style="padding:0 !important;">
+                                  <table ng-attr-style="{{$ctrl.tableStyle()}}" ng-if="$ctrl.sectionIsntSpacer(section)"
+                                    border="0" cellpadding="0" cellspacing="0" class="ng-scope"
+                                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                                    <tbody>
+                                      <tr
+                                        ng-if="section.section.in_a_row &amp;&amp; !$ctrl.onlySocialFieldsInSection(section)"
+                                        class="ng-scope">
+                                        <td ng-attr-style="{{$ctrl.tdStyle(section.fields[0])}}"
+                                          style="border-collapse:collapse;font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;padding:0 !important;">
+                                          <zs-remove ng-repeat="field in section.fields track by $index"
+                                            ng-if="$ctrl.showFieldInRow(section, field)"
+                                            ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + field.area)}"
+                                            ng-mouseover="$ctrl.highlightPreviewField(field)"
+                                            ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                            ng-click="$ctrl.goToField(field, section)"
+                                            class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                            <span ng-if="field.tag &amp;&amp; field.tag.style.visible"
+                                              ng-attr-style="{{$ctrl.spanStyle(field.tag)}}" class="ng-binding ng-scope"
+                                              style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:italic;line-height:16px;font-weight:700;color:#303030;display:inline;">Phone.</span><span
+                                              ng-if="field.category == 'text' &amp;&amp; field.hyperlink"
+                                              class="ng-scope"> <a ng-href="tel:819-698-4956" target="_blank"
+                                                ng-attr-style="{{$ctrl.linkStyle(field)}}" rel="nofollow"
+                                                class="ng-binding" href="tel:819-698-4956"
+                                                style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;color:#535353;display:inline;text-decoration:none;">
+                                                (819) 698-4956 ext. 1540 &nbsp; </a> </span> </zs-remove>
+                                          <zs-remove ng-repeat="field in section.fields track by $index"
+                                            ng-if="$ctrl.showFieldInRow(section, field)"
+                                            ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + field.area)}"
+                                            ng-mouseover="$ctrl.highlightPreviewField(field)"
+                                            ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                            ng-click="$ctrl.goToField(field, section)"
+                                            class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                          </zs-remove>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr ng-repeat="table in $ctrl.tables" class="zs-1 zs-13">
+        <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+          <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+            style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+            <tbody>
+              <tr>
+                <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+                  <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                    <tbody>
+                      <tr ng-repeat="row in table.rows" class="ng-scope">
+                        <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+                          <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+                            style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                            <tbody>
+                              <tr>
+                                <td ng-repeat="section in row.sections" ng-attr-style="{{$ctrl.tdStyle(section)}}"
+                                  ng-if="$ctrl.showSection(section)"
+                                  ng-mouseover="$ctrl.highlightSectionSpacer(section)"
+                                  ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                  ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'section' + section.style.section_area)}"
+                                  ng-click="$ctrl.goToVerticalSection(section)" class="ng-scope" role="button"
+                                  tabindex="0" style="padding:0 !important;">
+                                  <table ng-attr-style="{{$ctrl.tableStyle()}}" ng-if="$ctrl.sectionIsntSpacer(section)"
+                                    border="0" cellpadding="0" cellspacing="0" class="ng-scope"
+                                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                                    <tbody>
+                                      <tr
+                                        ng-if="section.section.in_a_row &amp;&amp; !$ctrl.onlySocialFieldsInSection(section)"
+                                        class="ng-scope">
+                                        <td ng-attr-style="{{$ctrl.tdStyle(section.fields[0])}}"
+                                          style="border-collapse:collapse;font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;padding:0 !important;">
+                                          <zs-remove ng-repeat="field in section.fields track by $index"
+                                            ng-if="$ctrl.showFieldInRow(section, field)"
+                                            ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + field.area)}"
+                                            ng-mouseover="$ctrl.highlightPreviewField(field)"
+                                            ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                            ng-click="$ctrl.goToField(field, section)"
+                                            class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                            <span ng-if="field.tag &amp;&amp; field.tag.style.visible"
+                                              ng-attr-style="{{$ctrl.spanStyle(field.tag)}}" class="ng-binding ng-scope"
+                                              style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:italic;line-height:16px;font-weight:700;color:#303030;display:inline;">Email.</span><span
+                                              ng-if="field.category == 'text' &amp;&amp; field.hyperlink"
+                                              class="ng-scope"> <a ng-href="mailto:ylemonde@habitationsurbania.com"
+                                                target="_blank" ng-attr-style="{{$ctrl.linkStyle(field)}}"
+                                                rel="nofollow" class="ng-binding"
+                                                href="mailto:ylemonde@habitationsurbania.com"
+                                                style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;color:#535353;display:inline;text-decoration:none;">
+                                                ylemonde@habitationsurbania.com&nbsp; </a> </span>
+                                            <zs-remove ng-repeat="field in section.fields track by $index"
+                                              ng-if="$ctrl.showFieldInRow(section, field)"
+                                              ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + field.area)}"
+                                              ng-mouseover="$ctrl.highlightPreviewField(field)"
+                                              ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                              ng-click="$ctrl.goToField(field, section)"
+                                              class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                            </zs-remove>
+                                            <zs-remove ng-repeat="field in section.fields track by $index"
+                                              ng-if="$ctrl.showFieldInRow(section, field)"
+                                              ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + field.area)}"
+                                              ng-mouseover="$ctrl.highlightPreviewField(field)"
+                                              ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                              ng-click="$ctrl.goToField(field, section)"
+                                              class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                              <br>
+                                              <span ng-if="field.tag &amp;&amp; field.tag.style.visible"
+                                                ng-attr-style="{{$ctrl.spanStyle(field.tag)}}"
+                                                class="ng-binding ng-scope"
+                                                style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:italic;line-height:16px;font-weight:700;color:#303030;display:inline;">Website
+                                                #1.</span><span
+                                                ng-if="field.category == 'text' &amp;&amp; field.hyperlink"
+                                                class="ng-scope"> <a ng-href="https://habitationsurbania.com"
+                                                  target="_blank" ng-attr-style="{{$ctrl.linkStyle(field)}}"
+                                                  rel="nofollow" class="ng-binding"
+                                                  href="https://habitationsurbania.com"
+                                                  style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;color:#535353;display:inline;text-decoration:none;">
+                                                  habitationsurbania.com &nbsp; </a> </span>
+                                              <br>
+                                              <span ng-if="field.tag &amp;&amp; field.tag.style.visible"
+                                                ng-attr-style="{{$ctrl.spanStyle(field.tag)}}"
+                                                class="ng-binding ng-scope"
+                                                style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:italic;line-height:16px;font-weight:700;color:#303030;display:inline;">Website
+                                                #2.</span><span
+                                                ng-if="field.category == 'text' &amp;&amp; field.hyperlink"
+                                                class="ng-scope"> <a ng-href="https://nomadya.net" target="_blank"
+                                                  ng-attr-style="{{$ctrl.linkStyle(field)}}" rel="nofollow"
+                                                  class="ng-binding" href="https://nomadya.net"
+                                                  style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;color:#535353;display:inline;text-decoration:none;">
+                                                  nomadya.net &nbsp; </a> </span>
+                                            </zs-remove>
+                                            <zs-remove ng-repeat="field in section.fields track by $index"
+                                              ng-if="$ctrl.showFieldInRow(section, field)"
+                                              ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + field.area)}"
+                                              ng-mouseover="$ctrl.highlightPreviewField(field)"
+                                              ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                              ng-click="$ctrl.goToField(field, section)"
+                                              class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                            </zs-remove>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr ng-repeat="table in $ctrl.tables" class="zs-1 zs-14">
+        <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+          <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+            style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+            <tbody>
+              <tr>
+                <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+                  <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                    <tbody>
+                      <tr ng-repeat="row in table.rows" class="ng-scope">
+                        <td ng-attr-style="{{$ctrl.defaultTDpadding}}" style="padding:0 !important;">
+                          <table ng-attr-style="{{$ctrl.tableStyle()}}" border="0" cellpadding="0" cellspacing="0"
+                            style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                            <tbody>
+                              <tr>
+                                <td ng-repeat="section in row.sections" ng-attr-style="{{$ctrl.tdStyle(section)}}"
+                                  ng-if="$ctrl.showSection(section)"
+                                  ng-mouseover="$ctrl.highlightSectionSpacer(section)"
+                                  ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                  ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'section' + section.style.section_area)}"
+                                  ng-click="$ctrl.goToVerticalSection(section)" class="ng-scope" role="button"
+                                  tabindex="0" style="padding:0 !important;">
+                                  <table ng-attr-style="{{$ctrl.tableStyle()}}" ng-if="$ctrl.sectionIsntSpacer(section)"
+                                    border="0" cellpadding="0" cellspacing="0" class="ng-scope"
+                                    style="font-family: 'Roboto', sans-serif;line-height:0px;font-size:1px;padding:0px!important;border-spacing:0px;margin:0px;border-collapse:collapse;">
+                                    <tbody>
+                                      <tr ng-repeat="field in section.fields track by $index"
+                                        ng-if="$ctrl.showFieldInColumn(section, field)"
+                                        ng-class="{'zs-preview-highlight':$ctrl.isThingShown('highlighter', 'field' + field.area)}"
+                                        ng-mouseover="$ctrl.highlightPreviewField(field)"
+                                        ng-mouseleave="$ctrl.hideThing('highlighter')"
+                                        ng-click="$ctrl.goToField(field, section)"
+                                        class="zs-preview-highlight-on-hover ng-scope" role="button" tabindex="0">
+                                        <td ng-attr-style="{{$ctrl.tdStyle(field)}}"
+                                          style="border-collapse:collapse;font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;padding:0 !important;">
+                                          <zs-remove ng-if="field.category == 'text' || field.category == 'tag'"
+                                            class="ng-scope"><span ng-if="field.tag &amp;&amp; field.tag.style.visible"
+                                              ng-attr-style="{{$ctrl.spanStyle(field.tag)}}" class="ng-binding ng-scope"
+                                              style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:italic;line-height:16px;font-weight:700;color:#303030;display:inline;">Address.</span><span
+                                              ng-if="!field.hyperlink" ng-attr-style="{{$ctrl.spanStyle(field)}}"
+                                              class="ng-binding ng-scope"
+                                              style="font-family:Verdana, Geneva, sans-serif;font-size:14.0px;font-style:normal;line-height:16px;font-weight:400;color:#535353;display:inline;">201-800
+                                              Boulevard de Port-Royal <br> Bécancour (QC), G9H 0M5</span> </zs-remove>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>
